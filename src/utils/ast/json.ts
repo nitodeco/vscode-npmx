@@ -19,7 +19,7 @@ function computeHash(text: string) {
   return createHash('sha1').update(text).digest('hex')
 }
 
-export function getJsonAst(doc: TextDocument) {
+export function parse(doc: TextDocument) {
   const uri = getKey(doc)
   const text = doc.getText()
   const hash = computeHash(text)

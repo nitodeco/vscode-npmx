@@ -1,6 +1,6 @@
 import type { DocumentLinkProvider, TextDocument } from 'vscode'
 import { DEP_SECTIONS } from '#constants'
-import { getJsonAst, getNodeRange } from '#utils/jsonAst'
+import { getNodeRange, parse } from '#utils/ast/json'
 import { findNodeAtLocation } from 'jsonc-parser'
 import { DocumentLink, Uri } from 'vscode'
 
@@ -9,7 +9,7 @@ export class PackageJsonLinkProvider implements DocumentLinkProvider {
     if (!document.fileName.endsWith('package.json'))
       return
 
-    const root = getJsonAst(document)
+    const root = parse(document)
     if (!root)
       return
 
