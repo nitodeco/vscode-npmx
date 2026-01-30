@@ -2,6 +2,8 @@ import type { Node } from 'jsonc-parser'
 import type { TextDocument } from 'vscode'
 import { createHash } from 'node:crypto'
 import { parseTree } from 'jsonc-parser'
+import { Range } from 'vscode'
+import { logger } from '../state'
 
 const astCache = new Map<string, {
   hash: string
@@ -22,6 +24,7 @@ export function getJsonAst(doc: TextDocument) {
   const hash = computeHash(text)
 
   if (!astCache.has(uri)) {
+    logger.info(`${uri}: can not find the cache`)
     astCache.set(uri, {
       hash,
       root: parseTree(text),
@@ -30,6 +33,7 @@ export function getJsonAst(doc: TextDocument) {
     const { hash: key } = astCache.get(uri)!
 
     if (key !== hash) {
+      logger.info(`${uri}: cache is outdated`)
       astCache.set(uri, {
         hash,
         root: parseTree(text),
@@ -38,4 +42,13 @@ export function getJsonAst(doc: TextDocument) {
   }
 
   return astCache.get(uri)!.root
+}
+
+export function getNodeRange(doc: TextDocument, node: Node) {
+  const start = doc.positionAt(node.offset + 1)
+  const end = doc.positionAt(
+    node.offset + node.length - 1,
+  )
+
+  return new Range(start, end)
 }

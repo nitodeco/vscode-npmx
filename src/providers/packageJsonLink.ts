@@ -1,7 +1,7 @@
 import type { DocumentLinkProvider, TextDocument } from 'vscode'
 import { findNodeAtLocation } from 'jsonc-parser'
-import { DocumentLink, Range, Uri } from 'vscode'
-import { getJsonAst } from '../utils/jsonAst'
+import { DocumentLink, Uri } from 'vscode'
+import { getJsonAst, getNodeRange } from '../utils/jsonAst'
 
 const sections = [
   'dependencies',
@@ -31,16 +31,8 @@ export class PackageJsonLinkProvider implements DocumentLinkProvider {
         if (!keyNode || typeof keyNode.value !== 'string')
           continue
 
-        const name = keyNode.value
-
-        const start = document.positionAt(keyNode.offset + 1)
-        const end = document.positionAt(
-          keyNode.offset + keyNode.length - 1,
-        )
-
-        const range = new Range(start, end)
-
-        const uri = Uri.parse(`https://npmx.dev/package/${name}`)
+        const range = getNodeRange(document, keyNode)
+        const uri = Uri.parse(`https://npmx.dev/package/${keyNode.value}`)
 
         links.push(new DocumentLink(range, uri))
       }
