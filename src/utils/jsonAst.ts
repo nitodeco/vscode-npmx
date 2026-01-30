@@ -1,10 +1,10 @@
 import type { Node } from 'jsonc-parser'
 import type { TextDocument } from 'vscode'
 import { createHash } from 'node:crypto'
+import { DEP_SECTIONS } from '#constants'
+import { logger } from '#state'
 import { findNodeAtLocation, parseTree } from 'jsonc-parser'
 import { Range } from 'vscode'
-import { logger } from '../state'
-import { DEP_SECTIONS } from './constants'
 
 const astCache = new Map<string, {
   hash: string

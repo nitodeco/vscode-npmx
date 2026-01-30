@@ -1,8 +1,8 @@
 import type { CompletionItemProvider, Position, TextDocument } from 'vscode'
+import { getJsonAst, getNodeRange, isInDepSection } from '#utils/jsonAst'
+import { getPackageInfo } from '#utils/npm'
 import { findNodeAtOffset } from 'jsonc-parser'
 import { CompletionItem, CompletionItemKind } from 'vscode'
-import { getJsonAst, getNodeRange, isInDepSection } from '../utils/jsonAst'
-import { getPackageInfo } from '../utils/npm'
 
 function isVersionPrefix(c: string) {
   return c === '^' || c === '~'

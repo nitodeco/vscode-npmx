@@ -4,6 +4,11 @@
     "lib": ["ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "paths": {
+      "#constants": ["./src/constants.ts"],
+      "#state": ["./src/state.ts"],
+      "#utils/*": ["./src/utils/*"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,

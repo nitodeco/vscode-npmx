@@ -1,8 +1,8 @@
 import type { DocumentLinkProvider, TextDocument } from 'vscode'
+import { DEP_SECTIONS } from '#constants'
+import { getJsonAst, getNodeRange } from '#utils/jsonAst'
 import { findNodeAtLocation } from 'jsonc-parser'
 import { DocumentLink, Uri } from 'vscode'
-import { DEP_SECTIONS } from '../utils/constants'
-import { getJsonAst, getNodeRange } from '../utils/jsonAst'
 
 export class PackageJsonLinkProvider implements DocumentLinkProvider {
   provideDocumentLinks(document: TextDocument) {

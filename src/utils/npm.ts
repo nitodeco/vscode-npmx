@@ -1,7 +1,7 @@
 import type { Packument, PackumentVersion } from '@npm/types'
+import { NPM_REGISTRY } from '#constants'
 import { LRUCache } from 'lru-cache'
 import { ofetch } from 'ofetch'
-import { NPM_REGISTRY } from './constants'
 
 type ResolvedPackumentVersion = Pick<PackumentVersion, 'version'> & { tag?: string }
 
