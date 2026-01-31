@@ -15,16 +15,21 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
       return
 
     const offset = document.offsetAt(position)
-    const info = this.extractor.getDependencyInfoByOffset(root, offset)
-    if (!info)
+    const dep = this.extractor.getDependencyInfoByOffset(root, offset)
+    if (!dep)
       return
 
-    const { name } = info
-
+    const { name, version } = dep
+    const coercedVersion = extractVersion(version)
     const md = new MarkdownString('')
     md.isTrusted = true
 
-    md.appendMarkdown(`[View on npmx](https://npmx.dev/package/${name})  \n`)
+    const footer = [
+      `**[View on npmx](https://npmx.dev/package/${name})**`,
+      `**[View docs on npmx](https://npmx.dev/docs/${name}/v/${coercedVersion})**`,
+    ]
+
+    md.appendMarkdown(`${footer.join(' | ')}\n`)
 
     return new Hover(md)
   }
