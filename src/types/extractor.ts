@@ -1,13 +1,14 @@
 import type { Range, TextDocument } from 'vscode'
 
 export interface DependencyInfo<T> {
-  node: T
+  nameNode: T
+  versionNode: T
   name: string
   version: string
 }
 
 export interface Extractor<T> {
-  parse: (document: TextDocument) => T | undefined
+  parse: (document: TextDocument) => T | null | undefined
 
   getNodeRange: (document: TextDocument, node: T) => Range
 

@@ -1,11 +1,12 @@
 import type { DependencyInfo, Extractor } from '#types/extractor'
 import type { Node } from 'jsonc-parser'
 import type { TextDocument } from 'vscode'
+import { isInRange } from '#utils/ast'
 import { createCachedParse } from '#utils/data'
 import { findNodeAtLocation, findNodeAtOffset, parseTree } from 'jsonc-parser'
 import { Range } from 'vscode'
 
-const DEP_SECTIONS = [
+const DEPENDENCY_SECTIONS = [
   'dependencies',
   'devDependencies',
   'peerDependencies',
@@ -17,58 +18,68 @@ export class JsonExtractor implements Extractor<Node> {
 
   getNodeRange(doc: TextDocument, node: Node) {
     const start = doc.positionAt(node.offset + 1)
-    const end = doc.positionAt(
-      node.offset + node.length - 1,
-    )
+    const end = doc.positionAt(node.offset + node.length - 1)
 
     return new Range(start, end)
   }
 
-  inDependencySection(root: Node, node: Node) {
-    return DEP_SECTIONS.some((section) => {
+  isInDependencySection(root: Node, node: Node) {
+    return DEPENDENCY_SECTIONS.some((section) => {
       const dep = findNodeAtLocation(root, [section])
       if (!dep || !dep.parent)
         return false
 
       const { offset, length } = dep.parent.children![1]
 
-      return node.offset > offset && node.offset < offset + length
+      return isInRange(node.offset, [offset, offset + length])
     })
   }
 
-  getDependenciesInfo(root: Node) {
-    const info: DependencyInfo<Node>[] = []
+  private parseDependencyNode(node: Node): DependencyInfo<Node> | undefined {
+    if (!node.children?.length)
+      return
 
-    DEP_SECTIONS.forEach((section) => {
+    const [nameNode, versionNode] = node.children
+
+    if (
+      typeof nameNode?.value !== 'string'
+      || typeof versionNode.value !== 'string'
+    ) {
+      return
+    }
+
+    return {
+      nameNode,
+      versionNode,
+      name: nameNode.value,
+      version: versionNode.value,
+    }
+  }
+
+  getDependenciesInfo(root: Node) {
+    const result: DependencyInfo<Node>[] = []
+
+    DEPENDENCY_SECTIONS.forEach((section) => {
       const node = findNodeAtLocation(root, [section])
       if (!node || !node.children)
         return
 
       for (const dep of node.children) {
-        const keyNode = dep.children?.[0]
-        if (!keyNode || typeof keyNode.value !== 'string')
-          continue
+        const info = this.parseDependencyNode(dep)
 
-        info.push({
-          node: keyNode,
-          name: keyNode.value,
-          version: '',
-        })
+        if (info)
+          result.push(info)
       }
     })
 
-    return info
+    return result
   }
 
   getDependencyInfoByOffset(root: Node, offset: number) {
     const node = findNodeAtOffset(root, offset)
-    if (!node || node.type !== 'string' || !this.inDependencySection(root, node))
+    if (!node || node.type !== 'string' || !this.isInDependencySection(root, node))
       return
 
-    return {
-      node,
-      name: node.parent!.children![0].value as string,
-      version: node.value as string,
-    }
+    return this.parseDependencyNode(node.parent!)
   }
 }
