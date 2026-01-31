@@ -28,6 +28,8 @@ export function registerDiagnosticCollection(mapping: Record<string, Extractor |
   const activeDocumentText = useDocumentText(() => activeEditor.value?.document)
 
   async function collectDiagnostics(document: TextDocument, extractor: Extractor) {
+    diagnosticCollection.delete(document.uri)
+
     const root = extractor.parse(document)
     if (!root)
       return
