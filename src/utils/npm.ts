@@ -27,7 +27,7 @@ export function encodePackageName(name: string): string {
 
 export const getPackageInfo = createCachedFetch<ResolvedPackument>(
   'package info',
-  async (name, staleValue, { signal }) => {
+  async (name, { signal }) => {
     const encodedName = encodePackageName(name)
 
     const pkg = await ofetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, { signal })

@@ -4,7 +4,7 @@ import { LRUCache } from 'lru-cache'
 
 export function createCachedFetch<T extends object>(
   key: string,
-  fetchMethod: (name: string, staleValue: T | undefined, options: LRUCache.FetcherOptions<string, T, unknown>) => Promise<T | undefined>,
+  fetchMethod: (name: string, options: LRUCache.FetcherOptions<string, T, unknown>) => Promise<T | undefined>,
 ) {
   const cache = new LRUCache<string, T>({
     max: 500,
@@ -14,11 +14,12 @@ export function createCachedFetch<T extends object>(
     fetchMethod: async (name, staleValue, options) => {
       try {
         logger.info(`[${name}]: fetching ${key}...`)
-        const r = await fetchMethod(name, staleValue, options)
+        const r = await fetchMethod(name, options)
         logger.info(`[${name}] fetching ${key} done!`)
         return r
       } catch (err) {
         logger.warn(`[${name}] fetching ${key} error: `, err)
+        return staleValue
       }
     },
   })

@@ -7,10 +7,10 @@ export const NPMX_DEV_API = 'https://npmx.dev/api'
 
 export const getReplacement = createCachedFetch<ModuleReplacement>(
   'replacement',
-  (name, staleValue, { signal }) => {
+  async (name, { signal }) => {
     const encodedName = encodePackageName(name)
 
-    return ofetch<ModuleReplacement>(`${NPMX_DEV_API}/replacements/${encodedName}`, { signal })
+    return await ofetch<ModuleReplacement>(`${NPMX_DEV_API}/replacements/${encodedName}`, { signal })
       // Fallback for cache compatibility (LRUCache rejects null/undefined)
       ?? {}
   },
