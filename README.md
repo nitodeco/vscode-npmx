@@ -32,9 +32,13 @@
 
 <!-- configs -->
 
-| Key                      | Description                                                                                                                                     | Type     | Default             |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------- |
-| `npmx.versionCompletion` | Version completion behavior: 'all' shows all versions, 'provenance-only' shows only versions with provenance, 'off' disables version completion | `string` | `"provenance-only"` |
+| Key                              | Description                                           | Type      | Default             |
+| -------------------------------- | ----------------------------------------------------- | --------- | ------------------- |
+| `npmx.hover.enabled`             | Enable hover information for packages                 | `boolean` | `true`              |
+| `npmx.completion.version`        | Version completion behavior                           | `string`  | `"provenance-only"` |
+| `npmx.diagnostics.deprecation`   | Show warnings for deprecated packages                 | `boolean` | `true`              |
+| `npmx.diagnostics.replacement`   | Show suggestions for package replacements             | `boolean` | `true`              |
+| `npmx.diagnostics.vulnerability` | Show warnings for packages with known vulnerabilities | `boolean` | `true`              |
 
 <!-- configs -->
 

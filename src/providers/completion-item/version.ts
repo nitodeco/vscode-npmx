@@ -34,7 +34,7 @@ export class VersionCompletionItemProvider<T extends Extractor> implements Compl
 
     let versionsKV = Object.values(pkg.versions)
 
-    if (config.versionCompletion === 'provenance-only')
+    if (config.completion.version === 'provenance-only')
       versionsKV = versionsKV.filter(({ hasProvenance }) => hasProvenance)
 
     return versionsKV.map(({ version, tag }) => {

@@ -42,18 +42,38 @@
   ],
   "contributes": {
     "configuration": {
-      "title": "Only suggest version",
+      "title": "npmx",
       "properties": {
-        "npmx.versionCompletion": {
+        "npmx.hover.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover information for packages"
+        },
+        "npmx.completion.version": {
           "type": "string",
           "enum": ["all", "provenance-only", "off"],
           "enumDescriptions": [
-            "show all versions",
-            "show only versions with provenance",
-            "disables version completion"
+            "Show all versions",
+            "Show only versions with provenance",
+            "Disable version completion"
           ],
           "default": "provenance-only",
-          "description": "Version completion behavior: 'all' shows all versions, 'provenance-only' shows only versions with provenance, 'off' disables version completion"
+          "description": "Version completion behavior"
+        },
+        "npmx.diagnostics.deprecation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show warnings for deprecated packages"
+        },
+        "npmx.diagnostics.replacement": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show suggestions for package replacements"
+        },
+        "npmx.diagnostics.vulnerability": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show warnings for packages with known vulnerabilities"
         }
       }
     }

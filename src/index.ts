@@ -21,18 +21,20 @@ export const { activate, deactivate } = defineExtension((ctx) => {
   const packageJsonExtractor = new PackageJsonExtractor()
   const pnpmWorkspaceYamlExtractor = new PnpmWorkspaceYamlExtractor()
 
-  ctx.subscriptions.push(
-    languages.registerHoverProvider(
-      { pattern: PACKAGE_JSON_PATTERN },
-      new NpmxHoverProvider(packageJsonExtractor),
-    ),
-    languages.registerHoverProvider(
-      { pattern: PNPM_WORKSPACE_PATTERN },
-      new NpmxHoverProvider(pnpmWorkspaceYamlExtractor),
-    ),
-  )
+  if (config.hover.enabled) {
+    ctx.subscriptions.push(
+      languages.registerHoverProvider(
+        { pattern: PACKAGE_JSON_PATTERN },
+        new NpmxHoverProvider(packageJsonExtractor),
+      ),
+      languages.registerHoverProvider(
+        { pattern: PNPM_WORKSPACE_PATTERN },
+        new NpmxHoverProvider(pnpmWorkspaceYamlExtractor),
+      ),
+    )
+  }
 
-  if (config.versionCompletion !== 'off') {
+  if (config.completion.version !== 'off') {
     ctx.subscriptions.push(
       languages.registerCompletionItemProvider(
         { pattern: PACKAGE_JSON_PATTERN },
