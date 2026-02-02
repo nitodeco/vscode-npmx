@@ -1,5 +1,5 @@
 {
-  "publisher": "9romise",
+  "publisher": "npmx-dev",
   "name": "vscode-npmx",
   "displayName": "npmx",
   "type": "module",
@@ -12,13 +12,13 @@
     "url": "https://github.com/9romise"
   },
   "license": "MIT",
-  "homepage": "https://github.com/9romise/vscode-npmx#readme",
+  "homepage": "https://github.com/npmx-dev/vscode-npmx#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/9romise/vscode-npmx.git"
+    "url": "git+https://github.com/npmx-dev/vscode-npmx.git"
   },
   "bugs": {
-    "url": "https://github.com/9romise/vscode-npmx/issues"
+    "url": "https://github.com/npmx-dev/vscode-npmx/issues"
   },
   "keywords": [
     "npmx"

@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="https://github.com/9romise/vscode-npmx/blob/main/res/logo.png?raw=true" height="150">
+  <img src="https://github.com/npmx-dev/vscode-npmx/blob/main/res/logo.png?raw=true" height="150">
 </p>
 
 <h1 align="center">npmx <sup>VS Code</sup></h1>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=9romise.npmx">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/9romise.npmx?color=blue&label=VS%20Code%20Marketplace" alt="VS Code Marketplace">
+  <a href="https://marketplace.visualstudio.com/items?itemName=npmx-dev.npmx">
+    <img src="https://img.shields.io/visual-studio-marketplace/v/npmx-dev.npmx?color=blue&label=VS%20Code%20Marketplace" alt="VS Code Marketplace">
   </a>
   <a href="https://kermanx.github.io/reactive-vscode/" target="__blank"><img src="https://img.shields.io/badge/made_with-reactive--vscode-%23007ACC?style=flat&labelColor=%23229863"  alt="Made with reactive-vscode" /></a>
 </p>
