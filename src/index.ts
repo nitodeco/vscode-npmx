@@ -1,15 +1,16 @@
 import {
+  NPMX_DEV,
   PACKAGE_JSON_BASENAME,
   PACKAGE_JSON_PATTERN,
   PNPM_WORKSPACE_BASENAME,
   PNPM_WORKSPACE_PATTERN,
   VERSION_TRIGGER_CHARACTERS,
 } from '#constants'
-import { defineExtension, watchEffect } from 'reactive-vscode'
-import { Disposable, languages } from 'vscode'
+import { defineExtension, useCommands, watchEffect } from 'reactive-vscode'
+import { Disposable, env, languages, Uri } from 'vscode'
 import { PackageJsonExtractor } from './extractors/package-json'
 import { PnpmWorkspaceYamlExtractor } from './extractors/pnpm-workspace-yaml'
-import { displayName, version } from './generated-meta'
+import { commands, displayName, version } from './generated-meta'
 import { VersionCompletionItemProvider } from './providers/completion-item/version'
 import { registerDiagnosticCollection } from './providers/diagnostics'
 import { NpmxHoverProvider } from './providers/hover/npmx'
@@ -62,5 +63,11 @@ export const { activate, deactivate } = defineExtension(() => {
   registerDiagnosticCollection({
     [PACKAGE_JSON_BASENAME]: packageJsonExtractor,
     [PNPM_WORKSPACE_BASENAME]: pnpmWorkspaceYamlExtractor,
+  })
+
+  useCommands({
+    [commands.openInBrowser]: () => {
+      env.openExternal(Uri.parse(NPMX_DEV))
+    },
   })
 })
