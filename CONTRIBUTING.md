@@ -135,7 +135,7 @@ import { memoize } from '../memoize'
 Write unit tests for core functionality using Vitest:
 
 ```typescript
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 describe('featureName', () => {
   it('should handle expected case', () => {
@@ -233,4 +233,4 @@ If you have questions or need help, feel free to open an issue for discussion or
 
 ## License
 
-By contributing to vscode-npmx, you agree that your contributions will be licensed under the [MIT License](LICENSE).  
+By contributing to vscode-npmx, you agree that your contributions will be licensed under the [MIT License](LICENSE).
