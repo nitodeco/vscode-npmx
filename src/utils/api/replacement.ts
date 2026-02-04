@@ -5,10 +5,6 @@ import { ofetch } from 'ofetch'
 import { memoize } from '../memoize'
 import { encodePackageName } from '../package'
 
-export type {
-  ModuleReplacement,
-}
-
 export const getReplacement = memoize<string, Promise<ModuleReplacement | null>>(async (name) => {
   logger.info(`Fetching replacements for ${name}`)
   const encodedName = encodePackageName(name)

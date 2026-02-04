@@ -5,7 +5,7 @@ import { DiagnosticSeverity, Uri } from 'vscode'
 
 export const checkDeprecation: DiagnosticRule = (dep, pkg) => {
   const exactVersion = extractVersion(dep.version)
-  const versionInfo = pkg.versions[exactVersion]
+  const versionInfo = pkg.versionsMeta[exactVersion]
 
   if (!versionInfo?.deprecated)
     return

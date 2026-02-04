@@ -1,4 +1,4 @@
-import type { ModuleReplacement } from '#utils/api/replacement'
+import type { ModuleReplacement } from 'module-replacements'
 import type { DiagnosticRule } from '..'
 import { getReplacement } from '#utils/api/replacement'
 import { DiagnosticSeverity, Uri } from 'vscode'
@@ -11,7 +11,11 @@ function getReplacementsDocUrl(path: string): string {
   return `https://github.com/es-tooling/module-replacements/blob/main/docs/modules/${path}.md`
 }
 
-// https://github.com/npmx-dev/npmx.dev/blob/main/app/components/PackageReplacement.vue#L8-L30
+/**
+ * Keep messages in sync with npmx.dev wording.
+ *
+ * https://github.com/npmx-dev/npmx.dev/blob/main/app/components/PackageReplacement.vue#L8-L30
+ */
 function getReplacementInfo(replacement: ModuleReplacement) {
   switch (replacement.type) {
     case 'native':
