@@ -35,7 +35,7 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
     const currentVersion = pkg.versionsMeta[coercedVersion]
     if (currentVersion) {
       if (currentVersion.provenance)
-        md.appendMarkdown(`[$(verified) Verified provenance](${npmPacakgeUrl(name, coercedVersion)}#provenance)\n\n`)
+        md.appendMarkdown(`[$(verified)${SPACER}Verified provenance](${npmPacakgeUrl(name, coercedVersion)}#provenance)\n\n`)
     }
 
     const packageLink = `[$(package)${SPACER}View on npmx](${npmxPackageUrl(name)})`
