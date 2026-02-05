@@ -9,17 +9,51 @@ export function encodePackageName(name: string): string {
   return encodeURIComponent(name)
 }
 
-export function isValidPrefix(c: string) {
-  return c === '^' || c === '~'
+const WORKSPACE_PREFIX = 'workspace:'
+const CATALOG_PREFIX = 'catalog:'
+const NPM_PREFIX = 'npm:'
+const JSR_PREFIX = 'jsr:'
+const URL_PREFIXES = ['http://', 'https://', 'git://', 'git+']
+
+export type VersionProtocol = 'npm' | null
+
+export interface ParsedVersion {
+  protocol: VersionProtocol
+  prefix: '' | '^' | '~'
+  semver: string
 }
 
-export function extractVersionPrefix(v: string) {
-  const firstChar = v[0]
-  const valid = isValidPrefix(firstChar)
-
-  return valid ? firstChar : ''
+export function formatVersion(parsed: ParsedVersion): string {
+  const protocol = parsed.protocol ? `${parsed.protocol}:` : ''
+  return `${protocol}${parsed.prefix}${parsed.semver}`
 }
 
-export function extractVersion(versionRange: string): string {
-  return versionRange.replace(/^[\^~]/, '')
+export function parseVersion(rawVersion: string): ParsedVersion | null {
+  // Skip special protocols that aren't standard npm versions
+  if (
+    [
+      WORKSPACE_PREFIX,
+      CATALOG_PREFIX,
+      JSR_PREFIX,
+      ...URL_PREFIXES,
+    ].some((p) => rawVersion.startsWith(p))
+  ) {
+    return null
+  }
+
+  let protocol: VersionProtocol = null
+  let versionStr = rawVersion
+
+  // Handle npm: protocol (e.g., npm:^1.0.0)
+  if (rawVersion.startsWith(NPM_PREFIX)) {
+    protocol = 'npm'
+    versionStr = rawVersion.slice(4 /* NPM_PREFIX.length */)
+  }
+
+  const firstChar = versionStr[0]
+  const hasPrefix = firstChar === '^' || firstChar === '~'
+  const prefix = hasPrefix ? firstChar : ''
+  const semver = hasPrefix ? versionStr.slice(1) : versionStr
+
+  return { protocol, prefix, semver }
 }

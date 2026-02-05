@@ -3,7 +3,7 @@ import type { HoverProvider, Position, TextDocument } from 'vscode'
 import { SPACER } from '#constants'
 import { getPackageInfo } from '#utils/api/package'
 import { npmPacakgeUrl, npmxDocsUrl, npmxPackageUrl } from '#utils/links'
-import { extractVersion } from '#utils/package'
+import { parseVersion } from '#utils/package'
 import { Hover, MarkdownString } from 'vscode'
 
 export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
@@ -23,23 +23,29 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
     if (!dep)
       return
 
-    const { name, version } = dep
-    const coercedVersion = extractVersion(version)
-    const md = new MarkdownString('', true)
-    md.isTrusted = true
+    const parsed = parseVersion(dep.version)
+    if (!parsed)
+      return
+
+    const { name } = dep
 
     const pkg = await getPackageInfo(name)
     if (!pkg)
       return
 
-    const currentVersion = pkg.versionsMeta[coercedVersion]
+    const md = new MarkdownString('', true)
+    md.isTrusted = true
+
+    const { semver } = parsed
+
+    const currentVersion = pkg.versionsMeta[semver]
     if (currentVersion) {
       if (currentVersion.provenance)
-        md.appendMarkdown(`[$(verified)${SPACER}Verified provenance](${npmPacakgeUrl(name, coercedVersion)}#provenance)\n\n`)
+        md.appendMarkdown(`[$(verified)${SPACER}Verified provenance](${npmPacakgeUrl(name, semver)}#provenance)\n\n`)
     }
 
     const packageLink = `[$(package)${SPACER}View on npmx](${npmxPackageUrl(name)})`
-    const docsLink = `[$(book)${SPACER}View docs on npmx](${npmxDocsUrl(name, coercedVersion)})`
+    const docsLink = `[$(book)${SPACER}View docs on npmx](${npmxDocsUrl(name, semver)})`
 
     md.appendMarkdown(`${packageLink} | ${docsLink}`)
 
