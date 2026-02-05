@@ -1,5 +1,6 @@
 import type { Extractor } from '#types/extractor'
 import type { CompletionItemProvider, Position, TextDocument } from 'vscode'
+import { PRERELEASE_PATTERN } from '#constants'
 import { config } from '#state'
 import { getPackageInfo } from '#utils/api/package'
 import { formatVersion, parseVersion } from '#utils/package'
@@ -41,7 +42,10 @@ export class VersionCompletionItemProvider<T extends Extractor> implements Compl
     for (const semver in pkg.versionsMeta) {
       const meta = pkg.versionsMeta[semver]
 
-      if (meta.deprecated)
+      if (meta.deprecated != null)
+        continue
+
+      if (!config.completion.showPrerelease && PRERELEASE_PATTERN.test(version))
         continue
 
       if (config.completion.version === 'provenance-only' && !meta.provenance)

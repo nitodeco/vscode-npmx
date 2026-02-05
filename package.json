@@ -60,6 +60,11 @@
           "default": "provenance-only",
           "description": "Version completion behavior"
         },
+        "npmx.completion.showPrerelease": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show prerelease versions (alpha, beta, rc, canary) in completion suggestions"
+        },
         "npmx.diagnostics.deprecation": {
           "type": "boolean",
           "default": true,
