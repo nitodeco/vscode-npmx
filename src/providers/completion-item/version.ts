@@ -41,6 +41,9 @@ export class VersionCompletionItemProvider<T extends Extractor> implements Compl
     for (const semver in pkg.versionsMeta) {
       const meta = pkg.versionsMeta[semver]
 
+      if (meta.deprecated)
+        continue
+
       if (config.completion.version === 'provenance-only' && !meta.provenance)
         continue
 
