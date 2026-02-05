@@ -57,3 +57,14 @@ export function parseVersion(rawVersion: string): ParsedVersion | null {
 
   return { protocol, prefix, semver }
 }
+
+export function isJsrSpecifier(rawVersion: string): boolean {
+  return rawVersion.startsWith('jsr:')
+}
+
+export function extractVersion(rawVersionRange: string): string {
+  const normalizedVersionRange = rawVersionRange.trim().replace(/^[~^]/, '')
+  const versionMatch = normalizedVersionRange.match(/\d+\.\d+\.\d+(?:-[0-9a-z.-]+)?/i)
+
+  return versionMatch ? versionMatch[0] : normalizedVersionRange
+}

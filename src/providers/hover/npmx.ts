@@ -2,8 +2,8 @@ import type { Extractor } from '#types/extractor'
 import type { HoverProvider, Position, TextDocument } from 'vscode'
 import { SPACER } from '#constants'
 import { getPackageInfo } from '#utils/api/package'
-import { npmPacakgeUrl, npmxDocsUrl, npmxPackageUrl } from '#utils/links'
-import { parseVersion } from '#utils/package'
+import { jsrPackageUrl, npmPackageUrl, npmxDocsUrl, npmxPackageUrl } from '#utils/links'
+import { isJsrSpecifier, parseVersion } from '#utils/package'
 import { Hover, MarkdownString } from 'vscode'
 
 export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
@@ -23,11 +23,24 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
     if (!dep)
       return
 
-    const parsed = parseVersion(dep.version)
+    const { name, version } = dep
+
+    if (isJsrSpecifier(version)) {
+      const jsrMd = new MarkdownString('', true)
+      const jsrUrl = jsrPackageUrl(name, version)
+
+      jsrMd.isTrusted = true
+
+      const jsrPackageLink = `[$(package)${SPACER}View on jsr.io](${jsrUrl})`
+      const npmxWarning = '$(warning) Not on npmx'
+      jsrMd.appendMarkdown(`${jsrPackageLink} | ${npmxWarning}`)
+
+      return new Hover(jsrMd)
+    }
+
+    const parsed = parseVersion(version)
     if (!parsed)
       return
-
-    const { name } = dep
 
     const pkg = await getPackageInfo(name)
     if (!pkg) {
@@ -47,7 +60,7 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
     const currentVersion = pkg.versionsMeta[semver]
     if (currentVersion) {
       if (currentVersion.provenance)
-        md.appendMarkdown(`[$(verified)${SPACER}Verified provenance](${npmPacakgeUrl(name, semver)}#provenance)\n\n`)
+        md.appendMarkdown(`[$(verified)${SPACER}Verified provenance](${npmPackageUrl(name, semver)}#provenance)\n\n`)
     }
 
     const packageLink = `[$(package)${SPACER}View on npmx](${npmxPackageUrl(name)})`
