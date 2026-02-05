@@ -30,8 +30,14 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
     const { name } = dep
 
     const pkg = await getPackageInfo(name)
-    if (!pkg)
-      return
+    if (!pkg) {
+      const errorMd = new MarkdownString('', true)
+
+      errorMd.isTrusted = true
+      errorMd.appendMarkdown('$(warning) Unable to fetch package information')
+
+      return new Hover(errorMd)
+    }
 
     const md = new MarkdownString('', true)
     md.isTrusted = true
