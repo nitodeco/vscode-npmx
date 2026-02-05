@@ -45,7 +45,7 @@ export class VersionCompletionItemProvider<T extends Extractor> implements Compl
       if (meta.deprecated != null)
         continue
 
-      if (config.completion.excludePrerelease && PRERELEASE_PATTERN.test(version))
+      if (config.completion.excludePrerelease && PRERELEASE_PATTERN.test(semver))
         continue
 
       if (config.completion.version === 'provenance-only' && !meta.provenance)
