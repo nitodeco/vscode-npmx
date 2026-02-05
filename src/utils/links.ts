@@ -1,5 +1,4 @@
 import { NPMJS_COM, NPMX_DEV } from '#constants'
-import { extractVersion } from '#utils/package'
 
 export function npmPackageUrl(name: string, version?: string): string {
   return version
@@ -18,8 +17,5 @@ export function npmxDocsUrl(name: string, version: string): string {
 }
 
 export function jsrPackageUrl(name: string, version: string): string {
-  const jsrVersionRange = version.replace(/^jsr:/, '')
-  const jsrVersion = extractVersion(jsrVersionRange)
-
-  return `https://jsr.io/${name}@${jsrVersion}`
+  return `https://jsr.io/${name}@${version}`
 }
