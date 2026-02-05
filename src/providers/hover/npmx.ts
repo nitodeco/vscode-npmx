@@ -3,7 +3,7 @@ import type { HoverProvider, Position, TextDocument } from 'vscode'
 import { SPACER } from '#constants'
 import { getPackageInfo } from '#utils/api/package'
 import { jsrPackageUrl, npmPackageUrl, npmxDocsUrl, npmxPackageUrl } from '#utils/links'
-import { isJsrSpecifier, parseVersion } from '#utils/package'
+import { isSupportedProtocol, parseVersion } from '#utils/package'
 import { Hover, MarkdownString } from 'vscode'
 
 export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
@@ -23,11 +23,16 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
     if (!dep)
       return
 
-    const { name, version } = dep
+    const parsed = parseVersion(dep.version)
+    if (!parsed)
+      return
 
-    if (isJsrSpecifier(version)) {
+    const { name } = dep
+    const { protocol, semver } = parsed
+
+    if (protocol === 'jsr') {
       const jsrMd = new MarkdownString('', true)
-      const jsrUrl = jsrPackageUrl(name, version)
+      const jsrUrl = jsrPackageUrl(name, semver)
 
       jsrMd.isTrusted = true
 
@@ -38,8 +43,7 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
       return new Hover(jsrMd)
     }
 
-    const parsed = parseVersion(version)
-    if (!parsed)
+    if (!isSupportedProtocol(protocol))
       return
 
     const pkg = await getPackageInfo(name)
@@ -54,8 +58,6 @@ export class NpmxHoverProvider<T extends Extractor> implements HoverProvider {
 
     const md = new MarkdownString('', true)
     md.isTrusted = true
-
-    const { semver } = parsed
 
     const currentVersion = pkg.versionsMeta[semver]
     if (currentVersion) {
