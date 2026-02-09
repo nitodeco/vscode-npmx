@@ -13,3 +13,5 @@ export const NPMX_DEV = 'https://npmx.dev'
 export const NPMX_DEV_API = `${NPMX_DEV}/api`
 
 export const SPACER = '&nbsp;'
+
+export const VULNERABILITY_FETCH_TIMEOUT_MS = 3_000
