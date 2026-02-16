@@ -9,14 +9,15 @@ export default defineConfig({
     'jsonc-parser': resolve('./node_modules/jsonc-parser/lib/esm/main.js'),
   },
   external: ['vscode'],
+  /// keep-sorted
   inlineOnly: [
-    'reactive-vscode',
     '@reactive-vscode/reactivity',
-    'jsonc-parser',
-    'yaml',
-    'ofetch',
     'fast-npm-meta',
+    'jsonc-parser',
+    'ofetch',
     'perfect-debounce',
+    'reactive-vscode',
+    'yaml',
   ],
   minify: 'dce-only',
 })

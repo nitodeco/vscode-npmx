@@ -3,7 +3,7 @@
   "name": "vscode-npmx",
   "displayName": "npmx",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "packageManager": "pnpm@10.29.2",
   "description": "A better browser for the npm registry",
   "author": {
@@ -12,7 +12,7 @@
     "url": "https://github.com/9romise"
   },
   "license": "MIT",
-  "homepage": "https://github.com/npmx-dev/vscode-npmx#readme",
+  "homepage": "https://docs.npmx.dev/guide/vscode-extension",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/npmx-dev/vscode-npmx.git"
@@ -68,6 +68,11 @@
           "type": "boolean",
           "default": true,
           "description": "Exclude prerelease versions (alpha, beta, rc, canary, etc.) from completion suggestions"
+        },
+        "npmx.diagnostics.upgrade": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show hints when a newer version of a package is available"
         },
         "npmx.diagnostics.deprecation": {
           "type": "boolean",
