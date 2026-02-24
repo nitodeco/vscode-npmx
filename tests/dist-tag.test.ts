@@ -36,7 +36,7 @@ describe('checkDistTag', () => {
     expect(result).toBeDefined()
   })
 
-  it('should flag common dist tags even when metadata does not include them', async () => {
+  it('should not flag common dist tags when metadata does not include them', async () => {
     const distTagNames = ['next', 'beta', 'canary', 'stable']
 
     for (const distTagName of distTagNames) {
@@ -44,7 +44,7 @@ describe('checkDistTag', () => {
       const packageInfo = createPackageInfo({})
       const result = await checkDistTag(dependency, packageInfo)
 
-      expect(result).toBeDefined()
+      expect(result).toBeUndefined()
     }
   })
 
@@ -84,18 +84,27 @@ describe('checkDistTag', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should flag unknown tag-like versions', async () => {
+  it('should not flag unknown tag-like versions', async () => {
     const dependency = createDependency('lodash', 'edge-channel')
     const packageInfo = createPackageInfo({})
 
     const result = await checkDistTag(dependency, packageInfo)
 
-    expect(result).toBeDefined()
+    expect(result).toBeUndefined()
   })
 
-  it('should flag uncommon tags when package metadata does not include them', async () => {
+  it('should not flag uncommon tags when package metadata does not include them', async () => {
     const dependency = createDependency('lodash', 'preview')
     const packageInfo = createPackageInfo({ latest: '1.0.0' })
+
+    const result = await checkDistTag(dependency, packageInfo)
+
+    expect(result).toBeUndefined()
+  })
+
+  it('should flag tag-like versions when package metadata includes them', async () => {
+    const dependency = createDependency('lodash', 'preview')
+    const packageInfo = createPackageInfo({ latest: '1.0.0', preview: '2.0.0-rc.1' })
 
     const result = await checkDistTag(dependency, packageInfo)
 
