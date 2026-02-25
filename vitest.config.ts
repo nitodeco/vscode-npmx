@@ -11,8 +11,6 @@ export default defineConfig({
     alias: {
       vscode: join(rootDir, '/tests/__mocks__/vscode.ts'),
     },
-  },
-  test: {
     include: ['tests/**/*.test.ts'],
   },
 })
