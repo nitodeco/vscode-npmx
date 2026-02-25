@@ -92,7 +92,7 @@
         "npmx.diagnostics.distTag": {
           "type": "boolean",
           "default": true,
-          "description": "Show warnings when a dependency uses a dist tag (e.g. latest, next, beta)"
+          "description": "Show warnings when a dependency uses a dist tag"
         }
       }
     },

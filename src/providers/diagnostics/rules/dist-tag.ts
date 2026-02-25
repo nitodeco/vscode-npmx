@@ -9,7 +9,7 @@ export const checkDistTag: DiagnosticRule = (dep, pkg) => {
     return
 
   const tag = parsed.semver
-  if (!(tag in (pkg.distTags ?? {})))
+  if (!(tag in pkg.distTags))
     return
 
   return {
